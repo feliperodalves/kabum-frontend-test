@@ -1,0 +1,109 @@
+import React from 'react';
+import {
+  MdRemoveCircleOutline,
+  MdAddCircleOutline,
+  MdDelete,
+} from 'react-icons/md';
+import { useSelector, useDispatch } from 'react-redux';
+import * as CartActions from '../../store/modules/cart/actions';
+
+import { Container, ProductTable, Total } from './styles';
+import { formatPrice } from '../../util/format';
+
+export default function Cart() {
+  const total = useSelector(state =>
+    formatPrice(
+      state.cart.reduce((sum, person) => {
+        return sum + person.price * person.amount;
+      }, 0)
+    )
+  );
+  const cart = useSelector(state =>
+    state.cart.map(person => ({
+      ...person,
+      subtotal: formatPrice(person.price * person.amount),
+    }))
+  );
+
+  const dispatch = useDispatch();
+
+  function increment(person) {
+    dispatch(CartActions.updateAmountRequest(person.id, person.amount + 1));
+  }
+
+  function decrement(person) {
+    dispatch(CartActions.updateAmountRequest(person.id, person.amount - 1));
+  }
+
+  return (
+    <Container>
+      <ProductTable>
+        <thead>
+          <tr>
+            <th />
+            <th>PROFISSIONAL</th>
+            <th>HORAS</th>
+            <th>SUBTOTAL</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {cart.map(person => (
+            <tr key={person.id}>
+              <td>
+                <img src={person.image} alt={person.title} />
+              </td>
+              <td>
+                <strong>{person.name}</strong>
+                <p>{person.jobTitle}</p>
+                <span>
+                  {person.priceFormatted}
+                  <i>/hora</i>
+                </span>
+              </td>
+              <td>
+                <div>
+                  <button type="button">
+                    <MdRemoveCircleOutline
+                      size={20}
+                      color="#FC6B0F"
+                      onClick={() => decrement(person)}
+                    />
+                  </button>
+                  <input type="number" readOnly value={person.amount} />
+                  <button type="button">
+                    <MdAddCircleOutline
+                      size={20}
+                      color="#FC6B0F"
+                      onClick={() => increment(person)}
+                    />
+                  </button>
+                </div>
+              </td>
+              <td>
+                <strong>{person.subtotal}</strong>
+              </td>
+              <td>
+                <button
+                  type="button"
+                  onClick={() =>
+                    dispatch(CartActions.removeFromCart(person.id))
+                  }
+                >
+                  <MdDelete size={20} color="#FC6B0F" />
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </ProductTable>
+      <footer>
+        <button type="button">Finalizar Pedido</button>
+        <Total>
+          <span>TOTAL</span>
+          <strong>{total}</strong>
+        </Total>
+      </footer>
+    </Container>
+  );
+}
