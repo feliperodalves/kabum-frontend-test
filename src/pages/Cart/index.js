@@ -66,7 +66,7 @@ export default function Cart() {
                   <button type="button">
                     <MdRemoveCircleOutline
                       size={20}
-                      color="#FC6B0F"
+                      color="#fc6b0f"
                       onClick={() => decrement(person)}
                     />
                   </button>
@@ -74,7 +74,7 @@ export default function Cart() {
                   <button type="button">
                     <MdAddCircleOutline
                       size={20}
-                      color="#FC6B0F"
+                      color="#fc6b0f"
                       onClick={() => increment(person)}
                     />
                   </button>
@@ -90,7 +90,7 @@ export default function Cart() {
                     dispatch(CartActions.removeFromCart(person.id))
                   }
                 >
-                  <MdDelete size={20} color="#FC6B0F" />
+                  <MdDelete size={20} color="#fc6b0f" />
                 </button>
               </td>
             </tr>
