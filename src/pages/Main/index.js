@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { MdAddShoppingCart } from 'react-icons/md';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format';
 
 import * as CartActions from '../../store/modules/cart/actions';
 
 import { ProductList } from './styles';
+import ProductCard from '../../components/ProductCard';
 
 export default function Main() {
   const [people, setPeople] = useState([]);
@@ -41,22 +41,12 @@ export default function Main() {
   return (
     <ProductList>
       {people.map(person => (
-        <li key={person.id}>
-          <img src={person.image} alt="Tênis" />
-          <strong>{person.name}</strong>
-          <p>{person.jobTitle}</p>
-          <span>
-            {person.priceFormatted}
-            <i>/hora</i>
-          </span>
-          <button type="button" onClick={() => handleAddTocart(person.id)}>
-            <div>
-              <MdAddShoppingCart size={16} color="#fff" />
-              {amount[person.id] || 0}
-            </div>
-            <span>ADICIONAR AO CARRINHO</span>
-          </button>
-        </li>
+        <ProductCard
+          key={person.id}
+          amount={amount}
+          person={person}
+          handleAddTocart={handleAddTocart}
+        />
       ))}
     </ProductList>
   );
