@@ -5,6 +5,8 @@ import {
   MdDelete,
 } from 'react-icons/md';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import * as CartActions from '../../store/modules/cart/actions';
 
 import { Container, ProductTable, Total } from './styles';
@@ -35,6 +37,10 @@ export default function Cart() {
     dispatch(CartActions.updateAmountRequest(person.id, person.amount - 1));
   }
 
+  function handleFinish() {
+    toast.info('Funcionalidade ainda não implementada');
+  }
+
   return (
     <Container>
       <ProductTable>
@@ -51,15 +57,19 @@ export default function Cart() {
           {cart.map(person => (
             <tr key={person.id}>
               <td>
-                <img src={person.image} alt={person.title} />
+                <Link to={`/Product/${person.id}`}>
+                  <img src={person.image} alt={person.title} />
+                </Link>
               </td>
               <td>
-                <strong>{person.name}</strong>
-                <p>{person.jobTitle}</p>
-                <span>
-                  {person.priceFormatted}
-                  <i>/hora</i>
-                </span>
+                <Link to={`/Product/${person.id}`}>
+                  <strong>{person.name}</strong>
+                  <p>{person.jobTitle}</p>
+                  <span>
+                    {person.priceFormatted}
+                    <i>/hora</i>
+                  </span>
+                </Link>
               </td>
               <td>
                 <div>
@@ -98,7 +108,9 @@ export default function Cart() {
         </tbody>
       </ProductTable>
       <footer>
-        <button type="button">Finalizar Pedido</button>
+        <button type="button" onClick={() => handleFinish()}>
+          Finalizar Pedido
+        </button>
         <Total>
           <span>TOTAL</span>
           <strong>{total}</strong>

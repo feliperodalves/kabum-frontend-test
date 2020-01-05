@@ -47,6 +47,11 @@ export const ProductTable = styled.table`
     height: 100px;
   }
 
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+
   strong {
     color: #333;
     display: block;
@@ -56,7 +61,7 @@ export const ProductTable = styled.table`
     display: block;
     margin-top: 5px;
     font-size: 18px;
-    font-weight: center;
+    font-weight: bold;
 
     > i {
       font-size: 14px;

@@ -12,8 +12,11 @@ export default function Header() {
   return (
     <Container>
       <Link to="/">
-        <img src={logo} alt="Rocketshoes" />
+        <img src={logo} alt="Kabum Professionals" />
       </Link>
+
+      <h1>Loja de Profissionais</h1>
+
       <Cart to="/cart">
         <div>
           <strong>Meu carrinho</strong>
