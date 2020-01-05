@@ -5,11 +5,13 @@ import { formatPrice } from '../../util/format';
 
 import * as CartActions from '../../store/modules/cart/actions';
 
-import { ProductList } from './styles';
+import { Container, Filter, ProductList } from './styles';
 import ProductCard from '../../components/ProductCard';
 
 export default function Main() {
   const [people, setPeople] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [filteredPeople, setFilteredPeople] = useState([]);
 
   const amount = useSelector(state =>
     state.cart.reduce((sum, product) => {
@@ -28,9 +30,20 @@ export default function Main() {
       }));
 
       setPeople(data);
+      setFilteredPeople(data);
     }
     loadPeople();
   }, []);
+
+  useEffect(() => {
+    const s = new RegExp(filter, 'i');
+    setFilteredPeople(
+      people.filter(
+        person =>
+          person.name.match(s) || person.id.match(s) || person.jobTitle.match(s)
+      )
+    );
+  }, [filter, people]);
 
   const dispatch = useDispatch();
 
@@ -39,15 +52,24 @@ export default function Main() {
   }
 
   return (
-    <ProductList>
-      {people.map(person => (
-        <ProductCard
-          key={person.id}
-          amount={amount}
-          person={person}
-          handleAddTocart={handleAddTocart}
-        />
-      ))}
-    </ProductList>
+    <Container>
+      <Filter
+        type="text"
+        placeholder="Digite aqui para filtrar, por nome ou função"
+        value={filter}
+        onChange={e => setFilter(e.target.value)}
+      />
+      <ProductList>
+        {filteredPeople.map(person => (
+          <ProductCard
+            key={person.id}
+            amount={amount}
+            person={person}
+            handleAddTocart={handleAddTocart}
+            markdown={filter}
+          />
+        ))}
+      </ProductList>
+    </Container>
   );
 }
